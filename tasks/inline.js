@@ -45,7 +45,7 @@ module.exports = function(grunt) {
 				}
 
 				if(detectDestType(filePair.dest) === 'directory') {
-                    destFilepath = (isExpandedPair) ? filePair.dest : unixifyPath(path.join(filePair.dest, fileName(filepath)));
+                    destFilepath = (isExpandedPair) ? filePair.dest : unixifyPath(path.join(filePair.dest, path.basename(filepath)));
 				} else {
 					destFilepath = filePair.dest || filepath;
 				}
@@ -55,10 +55,6 @@ module.exports = function(grunt) {
 			});
 		});
 	});
-
-    function fileName(filePath) {
-        return filePath.replace(/^.*[\\\/]/, '');
-    }
 
 	function isRemotePath( url ){
 		return url.match(/^'?https?:\/\//) || url.match(/^\/\//);
@@ -182,32 +178,7 @@ module.exports = function(grunt) {
 	}
 
 	function css(filepath, fileContent, relativeTo, options) {
-	    if(relativeTo) {
-	        filepath = filepath.replace(/[^\/]+\//g, relativeTo);
-	    }
-
-		fileContent = fileContent.replace(/url\(["']*([^)'"]+)["']*\)/g, function(matchedWord, imgUrl) {
-			var flag = imgUrl.indexOf(options.tag)!=-1;	// urls like "img/bg.png?__inline" will be transformed to base64
-
-			if(isBase64Path(imgUrl) || isRemotePath(imgUrl)){
-				return matchedWord;
-			}
-
-			var absoluteImgurl = path.resolve( path.dirname(filepath),imgUrl );
-			var newUrl = path.relative( path.dirname(filepath), absoluteImgurl );
-
-			absoluteImgurl = absoluteImgurl.replace(/\?.*$/, '');
-
-			if(flag && grunt.file.exists(absoluteImgurl)) {
-				newUrl = datauri(absoluteImgurl);
-			} else {
-				newUrl = newUrl.replace(/\\/g, '/');
-			}
-
-			return matchedWord.replace(imgUrl, newUrl);
-		});
-
-		return options.cssmin ? CleanCSS.process(fileContent) : fileContent;
+	    return cssInlineToHtml(filepath, filepath, fileContent, relativeTo, options);
 	}
 
 	function cssInlineToHtml(htmlFilepath, filepath, fileContent, relativeTo, options) {
@@ -216,7 +187,7 @@ module.exports = function(grunt) {
 	    }
 
 		fileContent = fileContent.replace(/url\(["']*([^)'"]+)["']*\)/g, function(matchedWord, imgUrl){
-			var flag = !!imgUrl.match(/\?__inline/);	// urls like "img/bg.png?__inline" will be transformed to base64
+            var flag = imgUrl.indexOf(options.tag) != -1;	// urls like "img/bg.png?__inline" will be transformed to base64
 
 			if(isBase64Path(imgUrl) || isRemotePath(imgUrl)){
 				return matchedWord;

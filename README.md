@@ -233,7 +233,8 @@ Then, after the `inline` task is run, the original content in `index.html` will 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-* 2015-03-06 v0.3.8 bug fix: support different order of tags in icon links
+* 2015-03-09 v0.3.9 bug fix: support custom tags for image urls in css
+* 2015-03-09 v0.3.8 bug fix: support different order of tags in icon links
 * 2015-03-09 v0.3.6 doc update
 * 2015-03-09 v0.3.5 add feature: support for inlining favicons
 * 2015-03-09 v0.3.4 fork: fork project, fix tests and merge a number of pull requests
@@ -242,11 +243,11 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 * 2014-06-15 v0.3.1 bug fix: when options.tag is '', then all img tags, whose src attribute has already been inlined will be matched.
 * 2014-05-19 v0.3.0 support for new options.exts
 * 2014-05-19 v0.2.9 bug fix: options.tag is assigned '', bug image url in css are not converted to base64 formate
-* 2014-03-06  v0.2.6 bug fix: script tags like <script src="index.js?__inline">\n</script> were not inlined
-* 2014-01-31  v0.2.3 radded tag option, encode url(..) images.
-* 2013-10-31  v0.2.2 bug fix: img urls like 'background: url(http://www.example.com/img/bg.png)' will be transformed to 'background: url(url(http://www.example.com/img/bg.png))'
-* 2013-10-30  v0.2.1 bug fix: when processing relative file path of img url in css stylesheet, forgot to transform "\" to "/" for windows users
-* 2013-10-30  v0.2.0 new feature: Support for minifing js、css when they ar inlined into html.
-* 2013-08-30  v0.1.9 bug fix: stylesheets ended with ">" cannot be inlined
-* 2013-09-02  v0.1.9 add feature: add options.dest to assign a destination path where the source file will be copied
-* 2013-09-02  v0.1.8 add feature: support for `<inline>` tag
+* 2014-03-06 v0.2.6 bug fix: script tags like <script src="index.js?__inline">\n</script> were not inlined
+* 2014-01-31 v0.2.3 radded tag option, encode url(..) images.
+* 2013-10-31 v0.2.2 bug fix: img urls like 'background: url(http://www.example.com/img/bg.png)' will be transformed to 'background: url(url(http://www.example.com/img/bg.png))'
+* 2013-10-30 v0.2.1 bug fix: when processing relative file path of img url in css stylesheet, forgot to transform "\" to "/" for windows users
+* 2013-10-30 v0.2.0 new feature: Support for minifing js、css when they ar inlined into html.
+* 2013-08-30 v0.1.9 bug fix: stylesheets ended with ">" cannot be inlined
+* 2013-09-02 v0.1.9 add feature: add options.dest to assign a destination path where the source file will be copied
+* 2013-09-02 v0.1.8 add feature: support for `<inline>` tag

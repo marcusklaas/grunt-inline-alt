@@ -6,7 +6,7 @@
   },
   "name": "grunt-inline-alt",
   "description": "Inlines img, script and link tags into the same file. Fork of the grunt-inline package maintained by chyingp@gmail.com.",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "keywords": [
     "gruntplugin",
     "inline",
