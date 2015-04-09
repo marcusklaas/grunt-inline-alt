@@ -233,7 +233,7 @@ Then, after the `inline` task is run, the original content in `index.html` will 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-* 2015-03-06 v0.3.7 bug fix: support different order of tags in icon links
+* 2015-03-06 v0.3.8 bug fix: support different order of tags in icon links
 * 2015-03-09 v0.3.6 doc update
 * 2015-03-09 v0.3.5 add feature: support for inlining favicons
 * 2015-03-09 v0.3.4 fork: fork project, fix tests and merge a number of pull requests

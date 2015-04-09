@@ -176,6 +176,7 @@ module.exports = function(grunt) {
 		return fileContent.replace(/<inline.+?src=["']([^"']+?)["']\s*?\/>/gi, htmlInclusion)
             .replace(/<script.+?src=["']\/?([^"']+?)["'](.*?)>\s*<\/script>/gi, scriptReplacement)
             .replace(/<link.+?href=["']\/?([^"']+?)["'].*?rel=["'][^"']*?icon[^"']*?["'].*?\/?>/gi, imageReplacement)
+            .replace(/<link.+?rel=["'][^"']*?icon[^"']*?["'].*?href=["']\/?([^"']+?)["'].*?\/?>/gi, imageReplacement)
             .replace(/<link.+?href=["']\/?([^"']+?)["'].*?\/?>/gi, cssReplacement)
             .replace(/<img.+?src=["']\/?([^"':]+?)["'].*?\/?\s*?>/gi, imageReplacement);
 	}
