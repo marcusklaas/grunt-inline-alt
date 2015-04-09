@@ -1,4 +1,6 @@
-# grunt-inline[![build status](https://secure.travis-ci.org/marcusklaas/grunt-inline.png)](http://travis-ci.org/marcusklaas/grunt-inline)
+# grunt-inline-alt
+
+[![build status](https://secure.travis-ci.org/marcusklaas/grunt-inline-alt.png)](http://travis-ci.org/marcusklaas/grunt-inline-alt)
 
 Brings externally referenced resources, such as js, css and images, into
 a single file.
