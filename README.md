@@ -27,7 +27,7 @@ This plugin requires Grunt `~0.4.1`
 
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
-	npm install grunt-inline --save-dev
+	npm install grunt-inline-alt --save-dev
 
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
@@ -233,7 +233,8 @@ Then, after the `inline` task is run, the original content in `index.html` will 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-* 2015-03-03 v0.3.5 add feature: support for inlining favicons
+* 2015-03-09 v0.3.6 doc update
+* 2015-03-09 v0.3.5 add feature: support for inlining favicons
 * 2015-03-09 v0.3.4 fork: fork project, fix tests and merge a number of pull requests
 * 2015-01-09 v0.3.3 bug fix: when processing files of a folder and then copy the processed content to another destination, the original files are changed unexpectedly, as mentioned in this issue [Support file globbing for input and output](https://github.com/chyingp/grunt-inline/issues/35)
 * 2014-06-16 v0.3.1 bug fix: protocol-relative urls in css are messed up

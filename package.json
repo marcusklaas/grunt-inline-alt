@@ -1,12 +1,12 @@
 {
   "author": {
-    "name": "程序猿小卡",
-    "email": "chyingp@gmail.com",
-    "url": "https://github.com/chyingp"
+    "name": "Marcus Klaas",
+    "email": "mail@marcusklaas.nl",
+    "url": "https://github.com/marcusklaas"
   },
-  "name": "grunt-inline",
-  "description": "Inlines img, script and link tags into the same file.",
-  "version": "0.3.5",
+  "name": "grunt-inline-alt",
+  "description": "Inlines img, script and link tags into the same file. Fork of the grunt-inline package maintained by chyingp@gmail.com.",
+  "version": "0.3.6",
   "keywords": [
     "gruntplugin",
     "inline",
@@ -16,7 +16,7 @@
   "main": "inline",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chyingp/grunt-inline.git"
+    "url": "https://www.github.com/marcusklaas/grunt-inline"
   },
   "engines": {
     "node": ">=0.8.0"
