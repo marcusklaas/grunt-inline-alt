@@ -5,7 +5,7 @@
 Brings externally referenced resources, such as js, css and images, into
 a single file.
 
-For exmample:
+For example:
 
 ````
 <link href="css/style.css?__inline=true" rel="stylesheet" />
