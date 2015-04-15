@@ -1,9 +1,9 @@
-# grunt-inline
+# grunt-inline-alt
 
 [![build status](https://secure.travis-ci.org/marcusklaas/grunt-inline-alt.png)](http://travis-ci.org/marcusklaas/grunt-inline-alt)
 
 Brings externally referenced resources, such as js, css and images, into
-a single file.
+a single file. This is a fork of [grunt-inline](https://github.com/chyingp/grunt-inline/), which seems to be no longer maintained.
 
 For exmample:
 
