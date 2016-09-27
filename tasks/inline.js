@@ -94,7 +94,6 @@ module.exports = function(grunt) {
 
 			if (grunt.file.exists(inlineFilePath)) {
 				var styleSheetContent = grunt.file.read(inlineFilePath);
-grunt.log.write(inlineFilePath + '\n---\n');
 				var ret = '<style ' + options.inlineTagAttributes.css + '>\n' + cssInlineToHtml(filepath, inlineFilePath, styleSheetContent, relativeTo, options) + '\n</style>';				return ret;
 			} else {
 				grunt.log.error("Couldn't find " + inlineFilePath + '!');
