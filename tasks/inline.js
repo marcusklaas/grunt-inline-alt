@@ -56,10 +56,12 @@ module.exports = function(grunt) {
 	});
 
 	function isRemotePath(url) {
+//grunt.log.write('isRemotePath called -' + url + '\n matches = ' + (url.match(/^'?https?:\/\//) || url.match(/^\/\//)) + '***\n');
 		return url.match(/^'?https?:\/\//) || url.match(/^\/\//);
 	}
 
 	function isBase64Path(url) {
+//grunt.log.write('isBase64Path called -' + url + '\n matches = ' + (url.match(/^'?data.*base64/)) + '^^^\n');
 		return url.match(/^'?data.*base64/);
 	}
 
@@ -87,6 +89,7 @@ module.exports = function(grunt) {
 	    }
 
         var cssReplacement = function(matchedWord, src) {
+//grunt.log.write('cssReplacement :: matchedWord=' + matchedWord + ',imgUrl=' + src + '\n%%%\n');
             if(isRemotePath(src) || (isBase64Path(src)) || src.indexOf(options.tag) == -1) {
 				return matchedWord;
 			}
@@ -189,8 +192,7 @@ module.exports = function(grunt) {
                         return;
             }
             var flag = imgUrl.indexOf(options.tag) != -1;	// urls like "img/bg.png?__inline" will be transformed to base64
-grunt.log.write('urlMatcher :: matchedWord=' + matchedWord + ',imgUrl=' + imgUrl + '\n$$$\n');
-
+//grunt.log.write('urlMatcher :: matchedWord=' + matchedWord + ',imgUrl=' + imgUrl + '\n$$$\n');
 			if((isBase64Path(imgUrl)) || isRemotePath(imgUrl)) {
 				return matchedWord;
 			}
