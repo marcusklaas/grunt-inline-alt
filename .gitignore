@@ -1,18 +1,11 @@
-############
-## Windows
-############
-
 # Windows image file caches
 Thumbs.db
-
 # Folder config file
 Desktop.ini
-
-#############
-## My Project
-#############
-
+.DS_Store
+**/__*
+**/.idea
+# project
 node_modules/
 tmp/
-/.idea
-.DS_Store
+**/*.tgz

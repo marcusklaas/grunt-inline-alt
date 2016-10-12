@@ -5,7 +5,7 @@
 Brings externally referenced resources, such as js, css and images, into
 a single file. This is a fork of [grunt-inline](https://github.com/chyingp/grunt-inline/), which seems to be no longer maintained.
 
-For exmample:
+For example:
 
 ````
 <link href="css/style.css?__inline=true" rel="stylesheet" />

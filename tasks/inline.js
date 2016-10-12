@@ -35,7 +35,7 @@ module.exports = function(grunt) {
 				var fileContent = grunt.file.read(filepath);
 				var destFilepath = '';
 
-				grunt.log.write('Processing ' + filepath + '... ');
+				grunt.log.write('Processing ' + filepath + ' as filetype ' + fileType + '...\n');
 
 				if(fileType==='html' || fileType==='htm' || (exts && exts.indexOf(fileType) > -1)) {
 					fileContent = html(filepath, fileContent, relativeTo, options);
@@ -56,10 +56,12 @@ module.exports = function(grunt) {
 	});
 
 	function isRemotePath(url) {
+//grunt.log.write('isRemotePath called -' + url + '\n matches = ' + (url.match(/^'?https?:\/\//) || url.match(/^\/\//)) + '***\n');
 		return url.match(/^'?https?:\/\//) || url.match(/^\/\//);
 	}
 
 	function isBase64Path(url) {
+//grunt.log.write('isBase64Path called -' + url + '\n matches = ' + (url.match(/^'?data.*base64/)) + '^^^\n');
 		return url.match(/^'?data.*base64/);
 	}
 
@@ -86,25 +88,24 @@ module.exports = function(grunt) {
 	        filepath = filepath.replace(/[^\/]+\//, relativeTo);
 	    }
 
-        function cssReplacement(matchedWord, src) {
-            if(isRemotePath(src) || isBase64Path(src) || src.indexOf(options.tag) == -1) {
+        var cssReplacement = function(matchedWord, src) {
+//grunt.log.write('cssReplacement :: matchedWord=' + matchedWord + ',imgUrl=' + src + '\n%%%\n');
+            if(isRemotePath(src) || (isBase64Path(src)) || src.indexOf(options.tag) == -1) {
 				return matchedWord;
 			}
-
 			var inlineFilePath = path.resolve(path.dirname(filepath), src).replace(/\?.*$/, '');
-
 			if (grunt.file.exists(inlineFilePath)) {
 				var styleSheetContent = grunt.file.read(inlineFilePath);
-
-				return '<style ' + options.inlineTagAttributes.css + '>\n' + cssInlineToHtml(filepath, inlineFilePath, styleSheetContent, relativeTo, options) + '\n</style>';
+				var ret = '<style ' + options.inlineTagAttributes.css + '>\n' + cssInlineToHtml(filepath, inlineFilePath, styleSheetContent, relativeTo, options) + '\n</style>';
+				return ret;
 			} else {
-				grunt.log.error("Couldn't find " + inlineFilePath + '!');
+				grunt.log.error("Couldn't find " + inlineFilePath + '!\n');
 
 				return matchedWord;
 			}
         }
 
-        function imageReplacement(matchedWord, src) {
+        var imageReplacement = function(matchedWord, src) {
             if( ! grunt.file.isPathAbsolute(src) && src.indexOf(options.tag)!=-1) {
                 var inlineFilePath = path.resolve(path.dirname(filepath), src).replace(/\?.*$/, '');	// 将参数去掉
 
@@ -118,7 +119,7 @@ module.exports = function(grunt) {
             return matchedWord;
         }
 
-        function scriptReplacement(matchedWord, src, attrs) {
+        var scriptReplacement = function (matchedWord, src, attrs) {
             if( ! isRemotePath(src) && src.indexOf(options.tag)!=-1) {
                 var dataAttribs = getDataAttribs(attrs);
                 var inlineFilePath = path.resolve(path.dirname(filepath), src).replace(/\?.*$/, '');
@@ -126,16 +127,16 @@ module.exports = function(grunt) {
 
                 if(grunt.file.exists(inlineFilePath)) {
                     var inlineTagAttributes = options.inlineTagAttributes.js;
-                    return '<script ' + inlineTagAttributes + ' ' + dataAttribs.join(' ') +' >\n' + c + '\n</script>';
+                    return '<script ' + inlineTagAttributes + ' ' + dataAttribs.join(' ') +' >\n' + (options.wrap_content_cdata ? '<![CDATA[\n' : '') + c + '\n' + (options.wrap_content_cdata ? '\n]]>' : '') + '\n</script>';
                 } else {
-                    grunt.log.error("Couldn't find " + inlineFilePath + '!');
+                    grunt.log.error("Couldn't find " + inlineFilePath + '!\n');
                 }
             }
 
             return matchedWord;
         }
 
-        function htmlInclusion(matchedWord, src) {
+        var htmlInclusion = function (matchedWord, src) {
 			if( ! isRemotePath(src) && grunt.file.isPathAbsolute(src)) {
 				return matchedWord;
 			}
@@ -143,13 +144,13 @@ module.exports = function(grunt) {
 			var inlineFilePath = path.resolve(path.dirname(filepath), src);
 
 			if( ! grunt.file.exists(inlineFilePath)) {
-				grunt.log.error("Couldn't find " + inlineFilePath + '!');
+				grunt.log.error("Couldn't find " + inlineFilePath + '!\n');
 
 				return matchedWord;
 			}
 
 			var ret = grunt.file.read(inlineFilePath);
-			// @otod need to be checked, add bye herbert
+			// @todo need to be checked, add bye herbert
 			var _more = src.match(/^(..\/)+/ig);
 
 			if( ! _more || !_more[0]) {
@@ -167,12 +168,14 @@ module.exports = function(grunt) {
 			return ret.replace(/(<script.+?src=["'])([^"']+?)(["'].*?><\/script>)/g, _addMore);
         }
 
-		return fileContent.replace(/<inline.+?src=["']([^"']+?)["']\s*?\/>/gi, htmlInclusion)
-            .replace(/<script.+?src=["']\/?([^"']+?)["'](.*?)>\s*<\/script>/gi, scriptReplacement)
-            .replace(/<link.+?href=["']\/?([^"']+?)["'].*?rel=["'][^"']*?icon[^"']*?["'].*?\/?>/gi, imageReplacement)
-            .replace(/<link.+?rel=["'][^"']*?icon[^"']*?["'].*?href=["']\/?([^"']+?)["'].*?\/?>/gi, imageReplacement)
-            .replace(/<link.+?href=["']\/?([^"']+?)["'].*?\/?>/gi, cssReplacement)
-            .replace(/<img.+?src=["']\/?([^"':]+?)["'].*?\/?\s*?>/gi, imageReplacement);
+		var ret= fileContent.replace(/<inline.+?src=["']([^"']+?)["']\s*?\/>/gi, htmlInclusion)
+	            .replace(/<script.+?src=["']\/?([^"']+?)["'](.*?)>\s*<\/script>/gi, scriptReplacement)
+		    .replace(/<link.+?href=["']\/?([^"']+?)["'].*?rel=["'][^"']*?icon[^"']*?["'].*?\/?>/gi, imageReplacement)
+		    .replace(/<link.+?rel=["'][^"']*?icon[^"']*?["'].*?href=["']\/?([^"']+?)["'].*?\/?>/gi, imageReplacement)
+                    .replace(/<link.+?href=["']\/?([^"']+?)["'].*?\/?>/gi, cssReplacement)
+                    .replace(/<img.+?src=["']\/?([^"':]+?)["'].*?\/?\s*?>/gi, imageReplacement);
+
+		return ret;
 	}
 
 	function css(filepath, fileContent, relativeTo, options) {
@@ -183,28 +186,60 @@ module.exports = function(grunt) {
 	    if(relativeTo) {
 	        filepath = filepath.replace(/[^\/]+\//g, relativeTo);
 	    }
-
-		fileContent = fileContent.replace(/url\(["']*([^)'"]+)["']*\)/g, function(matchedWord, imgUrl) {
+		// match tokens with "url" in content
+		var urlMatcher = function(matchedWord, imgUrl) {
+            if (!imgUrl || !matchedWord) {
+                        return;
+            }
             var flag = imgUrl.indexOf(options.tag) != -1;	// urls like "img/bg.png?__inline" will be transformed to base64
-
-			if(isBase64Path(imgUrl) || isRemotePath(imgUrl)) {
+//grunt.log.write('urlMatcher :: matchedWord=' + matchedWord + ',imgUrl=' + imgUrl + '\n$$$\n');
+			if((isBase64Path(imgUrl)) || isRemotePath(imgUrl)) {
 				return matchedWord;
 			}
 
-			var absoluteImgurl = path.resolve(path.dirname(filepath), imgUrl);	// img url relative to project root
-			var newUrl = path.relative(path.dirname(htmlFilepath), absoluteImgurl);	// img url relative to the html file
+			var absoluteImgUrl = path.resolve(path.dirname(filepath), imgUrl);	// img url relative to project root
+			var newUrl = path.relative(path.dirname(htmlFilepath), absoluteImgUrl);	// img url relative to the html file
 
-			absoluteImgurl = absoluteImgurl.replace(/\?.*$/, '');
+			absoluteImgUrl = absoluteImgUrl.replace(/\?.*$/, '');
 
-			if(flag && grunt.file.exists(absoluteImgurl)) {
-				newUrl = datauri(absoluteImgurl);
+			if(flag && grunt.file.exists(absoluteImgUrl)) {
+				newUrl = new datauri(absoluteImgUrl);
 			} else {
 				newUrl = newUrl.replace(/\\/g, '/');
 			}
 
 			return matchedWord.replace(imgUrl, newUrl);
-		});
+		};
+		fileContent = fileContent.replace(/url\(["']*([^)'"]+)["']*\)/g, urlMatcher);
+		if (options.cssmin) {
+			try {
+			var compiled = new CleanCSS({
+				rebase: false,
+				report: 'min',
+				sourceMap: false
+			      }).minify(fileContent);
 
-		return options.cssmin ? CleanCSS.process(fileContent) : fileContent;
+			if (compiled.warnings.length) {
+			  grunt.log.error(compiled.warnings.toString());
+			}
+
+			if (compiled.errors.length) {
+			  grunt.warn(compiled.errors.toString());
+			} else {
+				fileContent = compiled.styles;
+			}
+
+			if (options.debug) {
+			  grunt.log.writeln(util.format(compiled.stats));
+			}
+			} catch (err) {
+			grunt.log.error(err);
+			grunt.warn('Inline sub-task CSS minification failed at ' + htmlFilepath + '.');
+			}
+		}
+		if (options.wrap_content_cdata) {
+			fileContent = '<![CDATA[\n' + fileContent + ']]>';
+		}
+		return  fileContent;
 	}
 };
